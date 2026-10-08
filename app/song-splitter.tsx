@@ -1,0 +1,20 @@
+"use client";
+import {useRef} from "react";
+import {Checkbox} from "@/components/ui/checkbox";
+import {stamp} from "@/lib/domain";
+import {type SongRange} from "@/lib/splitting";
+import {suggestSongRanges,cutSongVideos,type CutVideo} from "@/lib/video-split";
+export default function SongSplitter({file,duration,src,songs,ranges,onRanges,cuts,onCuts,confirmed,onConfirmed,busy,setBusy,onError}:{file:File;duration:number;src:string;songs:string[];ranges:SongRange[];onRanges:(r:SongRange[])=>void;cuts:CutVideo[];onCuts:(c:CutVideo[])=>void;confirmed:boolean;onConfirmed:(v:boolean)=>void;busy:string;setBusy:(v:string)=>void;onError:(v:string)=>void}){
+ const preview=useRef<HTMLVideoElement>(null);
+ const change=(next:SongRange[])=>{onRanges(next);onConfirmed(false);onCuts([]);};
+ async function detect(){setBusy("正在分析音频停顿");onError("");try{change(await suggestSongRanges(file,duration,songs));}catch(e){onError((e as Error).message);}finally{setBusy("");}}
+ async function generate(){setBusy("准备剪辑");onError("");try{preview.current?.pause();onCuts(await cutSongVideos(file,ranges,duration,(i,p)=>setBusy(`正在剪辑第 ${i+1}/${ranges.length} 首 · ${p}%`)));}catch(e){onError((e as Error).message);}finally{setBusy("");}}
+ return <section className="song-splitter"><h3>一段长视频，拆成几首歌</h3><p className="helper">分析声音停顿，建议分界点；请按演唱顺序确认歌曲和时间。掌声、串烧可能影响结果。</p><video ref={preview} src={src} controls playsInline preload="metadata" aria-label="原视频分段预览"/>
+ <div className="split-tools"><button className="secondary" disabled={!!busy} onClick={()=>void detect()}>自动寻找分界点</button><button className="secondary" disabled={!!busy||ranges.length>=8} onClick={()=>change([...ranges,{song:songs[ranges.length]||"",start:ranges.at(-1)?.end||0,end:duration}])}>＋ 添加单曲片段</button></div>
+ {!ranges.length&&<p className="helper">自动分析或手动添加片段，最多 8 首；支持跳过歌曲间的讲话与空白。</p>}
+ {ranges.map((r,i)=><div className="split-row" key={i}><div className="split-row-title"><strong>片段 {i+1}</strong><button className="text-button" disabled={!!busy} onClick={()=>change(ranges.filter((_,index)=>index!==i))}>移除</button></div><label>歌曲名<input className="field" list="split-setlist" aria-label={`第 ${i+1} 段歌曲名`} placeholder="填写或选择这段演唱的歌曲" maxLength={60} value={r.song} onChange={e=>change(ranges.map((item,index)=>index===i?{...item,song:e.target.value}:item))}/></label><div className="split-times"><label>开始（秒）<input className="field" type="number" min={0} max={duration} step="0.1" value={r.start} aria-label={`第 ${i+1} 段开始秒数`} onChange={e=>change(ranges.map((item,index)=>index===i?{...item,start:Number(e.target.value)}:item))}/></label><label>结束（秒）<input className="field" type="number" min={0} max={duration} step="0.1" value={r.end} aria-label={`第 ${i+1} 段结束秒数`} onChange={e=>change(ranges.map((item,index)=>index===i?{...item,end:Number(e.target.value)}:item))}/></label></div><div className="split-tools"><small>{stamp(r.start)} — {stamp(r.end)} · {Math.max(0,r.end-r.start).toFixed(1)} 秒</small><button className="text-button" onClick={()=>{if(preview.current){preview.current.currentTime=r.start;void preview.current.play().catch(()=>{});}}}>试看起点</button><button className="text-button" onClick={()=>{if(preview.current)onRanges(ranges.map((item,index)=>index===i?{...item,end:Math.round(preview.current!.currentTime*10)/10}:item));onConfirmed(false);onCuts([]);}}>当前时间作为结束</button></div></div>)}
+ <datalist id="split-setlist">{songs.map(s=><option key={s} value={s}/>)}</datalist>
+ {!!ranges.length&&<><label className="time-check"><Checkbox checked={confirmed} onCheckedChange={v=>onConfirmed(!!v)} disabled={!!busy}/>我已确认每段的歌曲和起止时间</label><p className="helper">本地剪辑保留原声，生成独立视频。剪辑耗时约等于片段总时长，请保持页面在前台。</p><button className="primary" disabled={!!busy||!confirmed} onClick={()=>void generate()}>{cuts.length?"重新生成单曲视频":"生成单曲视频"}</button></>}
+ {cuts.map((c,i)=><div className="cut-preview" key={c.src}><strong>✓ {ranges[i].song} · 独立视频已生成</strong><video src={c.src} controls playsInline preload="none" aria-label={`单曲片段 ${i+1} 预览`}/><small>{c.duration.toFixed(1)} 秒 · {(c.file.size/1024/1024).toFixed(1)} MB · 发布后独立归档</small></div>)}
+ </section>;
+}
