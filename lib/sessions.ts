@@ -23,4 +23,4 @@ export function createCommunitySession(draft:SessionDraft,id:string,owner:string
  const artist=Object.values(ARTISTS).find(a=>a.artist===draft.artist);
  return {...draft,id,night:draft.night||"现场",songs:[],kind:"concert",avatar:artist?.avatar||"",cover:artist?.avatar||"/concert.jpg",demo:false,tone:"forest",createdBy:owner};
 }
-export function includeContributedSongs(sessions:ConcertSession[],clips:Clip[]){return sessions.map(s=>s.createdBy?{...s,songs:[...new Set([...s.songs,...clips.filter(c=>c.sessionId===s.id).flatMap(c=>c.songs)])]}:s);}
+export function includeContributedSongs(sessions:ConcertSession[],clips:Clip[]){return sessions.map(s=>({...s,songs:[...new Set([...s.songs,...clips.filter(c=>c.sessionId===s.id).flatMap(c=>c.songs)])]}));}

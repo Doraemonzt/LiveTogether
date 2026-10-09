@@ -13,6 +13,7 @@ return json({error:"未找到"},404);}catch(e){console.error(e);return json({err
 export async function POST(req:Request){try{const user=requireUser(req);const [route,id]=part(req);const db=database();
 if(route==="upload"){const length=Number(req.headers.get("content-length"));if(!length||length>25*1024*1024)return json({error:"请选择不超过 25 MB 的视频"},413);const mime=(req.headers.get("content-type")||"").split(";")[0];if(!["video/mp4","video/webm","video/quicktime"].includes(mime))return json({error:"仅支持 MP4、WebM、MOV 视频"},400);const key=crypto.randomUUID();await bucket().put(key,req.body,{httpMetadata:{contentType:mime}});try{await db.prepare("INSERT INTO assets(id,owner,mime,size) VALUES(?,?,?,?)").bind(key,user,mime,length).run();}catch(e){await bucket().delete(key);throw e;}return json({id:key,src:"/api/media/"+key});}
 const b=await req.json() as any;
+if(route==="sessions"){const sessions=await communitySessions();const session=await prepareSession(b,sessions,user);if(!session)throw new Error("请填写演出信息");if(!sessions.some(s=>s.id===session.id))await insertSession(session).run();return json({session});}
 const sessions=route==="videos"?await communitySessions():[];
 const target=route==="videos"?await prepareSession(b.newSession,sessions,user):null;
 const catalog=target&&!sessions.some(s=>s.id===target.id)?[...sessions,target]:sessions;

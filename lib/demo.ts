@@ -17,6 +17,12 @@ export function createDemoStore(){
   if(path==="state")return structuredClone({sessions:includeContributedSongs(sessions,clips),clips,interactions,user,aiEnabled:true});
   if(path==="demo/switch-user"){user=user==="demo-1"?"demo-2":"demo-1";return {ok:true};}
   if(path==="analyze")return {suggestion:{view:"unknown",tags:[],description:"把这一刻的现场，留在我们的共同记忆里。",uncertainty:"可按你的现场记忆修改。"}};
+  if(path==="sessions"){
+   const draft=validateSession(b),existing=findExistingSession(draft,sessions);
+   const session=existing||createCommunitySession(draft,"community-"+crypto.randomUUID(),user);
+   if(!existing)sessions=[...sessions,session];
+   return {session:structuredClone(session)};
+  }
   if(path==="videos"||path.startsWith("videos/")){
    const batch=path==="videos/batch",id=path.slice("videos/".length);
    if(batch&&(!b.requestId||!Array.isArray(b.clips)||!b.clips.length||b.clips.length>8))throw new Error("分段发布参数无效");

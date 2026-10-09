@@ -6,6 +6,8 @@ test("new view fills exactly one cell, leaves other night untouched",()=>{const 
 test("same performance switches with canonical offset",()=>{assert.equal(switchTime(clips[0],{...clips[1],fileStart:4,songStart:2},10,"晴天"),12);});
 test("different night, song and unsegmented uploads cannot switch",()=>{assert.equal(switchTime(clips[0],clips[7],10,"晴天"),null);assert.equal(switchTime(clips[0],clips[2],10,"晴天"),null);assert.equal(switchTime(clips[0],{...clips[1],songs:["晴天","稻香"]},10,"晴天"),null);assert.equal(switchTime(clips[0],{...clips[1],aligned:false},10,"晴天"),null);});
 test("out of range target is not selectable",()=>{assert.equal(switchTime(clips[0],clips[1],40,"晴天"),null);});
-test("upload requires real session, view and content",()=>{assert.throws(()=>validateClip({sessionId:"wrong"}));assert.throws(()=>validateClip({sessionId:"sh-1002",songs:[],view:"front"}));assert.throws(()=>validateClip({sessionId:"sh-1002",songs:["晴天"],segment:"开场",view:"front"}));});
+test("upload requires a real session and accepts optional metadata",()=>{assert.throws(()=>validateClip({sessionId:"wrong"}));assert.equal(validateClip({sessionId:"sh-1002"}).view,"unknown");assert.deepEqual(validateClip({sessionId:"sh-1002"}).songs,[]);assert.throws(()=>validateClip({sessionId:"sh-1002",view:"x".repeat(41)}));assert.equal(validateClip({sessionId:"sh-1002",songs:["晴天"],segment:"大合唱",view:"front"}).segment,"大合唱");});
 test("custom songs remain available, duplicate songs collapse",()=>{assert.deepEqual(validateClip({sessionId:"sh-1002",songs:["新歌","新歌"],view:"front"}).songs,["新歌"]);});
 
+
+test("camera angles remain fixed while unspecified is allowed",()=>{for(const view of ["front","wide","crowd","unknown"])assert.equal(validateClip({sessionId:"sh-1002",view}).view,view);assert.throws(()=>validateClip({sessionId:"sh-1002",view:"内场右侧"}));});

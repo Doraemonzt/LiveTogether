@@ -32,3 +32,9 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible),input:focus,textare
 .field:focus{border-color:#50415c!important}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #aba4be;outline-offset:3px}
 .artist-chip.active .artist-avatar{outline:1px solid #80738f;box-shadow:none}
+
+.simple-upload .upload-fields{gap:10px}.upload-destination{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;background:#272335}.upload-destination>svg{color:#c0ff64}.upload-destination strong{font-size:14px}.upload-destination p{font-size:12px;margin-top:3px}.simple-upload .upload-zone{min-height:112px;padding:15px}.upload-label{font-size:13px;margin-top:4px}.upload-label small{font-size:11px;color:#a89bb7;margin-left:6px}.upload-more{font-size:12px;color:#b6a9c5}.upload-more summary{cursor:pointer;padding:7px 0}.upload-more>.form-stack{margin-top:9px}.simple-upload .dialog-actions{margin-top:0;padding-top:12px}.simple-upload .dialog-actions>.primary{width:100%}
+
+.upload-choice-group{display:grid;gap:8px}.simple-upload .upload-description{display:grid;gap:8px;font-size:13px}.tag-options .add-choice{border-style:dashed;background:transparent;color:#bfb3cb}.simple-upload .tag-options button{max-width:100%;overflow-wrap:anywhere}
+
+.listing-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.create-concert{font-size:12px;padding:8px 12px}.create-session-dialog{max-height:90vh;overflow-y:auto}.create-session-dialog .session-choice{border:0;background:none;padding:0}@media(max-width:760px){.listing-heading{flex-wrap:wrap;gap:12px}.listing-actions{width:100%;justify-content:space-between}.create-concert{font-size:11px}}

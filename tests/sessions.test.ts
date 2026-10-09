@@ -23,3 +23,14 @@ test("new sessions accept publication and derive their own song coverage without
  assert.equal(sampleClips().some(c=>c.sessionId===session.id),false);
  assert.throws(()=>validateClip({...clip,sessionId:"nonexistent"},rows));
 });
+
+test("uploaded songs update existing session catalogs without leaking to another night",()=>{
+ const clip={...sampleClips()[0],id:"new-song",sessionId:"joker-sz-1006",songs:["绅士","绅士"],sample:false};
+ const rows=includeContributedSongs(SESSIONS,[clip]);
+ const current=rows.find(s=>s.id===clip.sessionId)!;
+ assert.equal(current.songs.filter(s=>s==="绅士").length,1);
+ assert.equal(rows.find(s=>s.id==="joker-sz-1005")!.songs.includes("绅士"),false);
+ assert.equal(coverage([clip],clip.sessionId,rows).filter(c=>c.song==="绅士"&&c.clip).length,1);
+ assert.equal(SESSIONS.find(s=>s.id===clip.sessionId)!.songs.includes("绅士"),false);
+ assert.equal(includeContributedSongs(SESSIONS,[]).find(s=>s.id===clip.sessionId)!.songs.includes("绅士"),false);
+});

@@ -65,3 +65,18 @@ test("two viewers can like, save, comment, report, suggest and approve moments",
   state.clips.length=0;assert.ok(api("state").clips.length);
  }finally{store.dispose();}
 });
+
+test("standalone concert creation validates, deduplicates, and accepts later uploads",()=>{
+ const {store,input,api}=setup();
+ try{
+  const before=api("state");
+  assert.throws(()=>api("sessions",{...draft,city:""}));
+  assert.equal(api("state").sessions.length,before.sessions.length);
+  const {session}=api("sessions",draft);
+  assert.equal(api("state").clips.length,before.clips.length);
+  assert.equal(api("sessions",draft).session.id,session.id);
+  assert.equal(api("state").sessions.length,before.sessions.length+1);
+  api("videos",{...input,sessionId:session.id});
+  assert.deepEqual(api("state").sessions.find((s:any)=>s.id===session.id).songs,["晴天"]);
+ }finally{store.dispose();}
+});
