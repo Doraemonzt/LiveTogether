@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./light.css";
 import "./concert.css";
+import "./desktop.css";
 
 export const metadata: Metadata = {
   title: "同一现场 · 找到你在场的那一晚",

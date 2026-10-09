@@ -1,0 +1,50 @@
+/* Desktop workspace shared by the hosted site and application. */
+body{min-width:960px}
+.app-shell{overflow-x:visible}
+main{width:100%;max-width:1504px;padding:32px 48px 0;margin:0 auto}
+.topbar{height:80px;padding:0 max(48px,calc((100vw - 1408px)/2));display:flex;justify-content:space-between;gap:48px}
+.topbar nav{position:static;transform:none;margin-left:auto;display:flex;gap:36px;height:100%}
+.topbar nav button{font-size:15px;min-width:88px}
+.brand small{display:block}.mobile-nav{display:none!important}
+.discovery-heading{min-height:240px;padding:36px 40px;margin-bottom:24px}
+.discovery-heading h1{font-size:40px}.discovery-heading p{font-size:15px}
+.stage-wordmark{margin-right:48px}.stage-wordmark>span{font-size:86px}
+.discovery-search{height:56px}.discovery-input input{font-size:14px}
+.artist-strip{gap:28px;margin:24px 0 32px}.artist-chip{min-width:76px}
+.listing-heading{margin-bottom:20px}.listing-actions{gap:16px}
+.create-concert{font-size:13px;padding:10px 15px}
+.concert-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.concert-card{padding:18px;gap:20px}.concert-poster{width:112px;min-height:174px}
+.concert-topline>strong{font-size:21px}.concert-tour{font-size:13px}
+.concert-stats{font-size:12px}.concert-venue{font-size:12px}
+.session-summary{padding:24px 28px;gap:24px}.session-summary h1{font-size:28px}
+.session-switch{margin-top:20px;gap:12px}.session-switch button{padding:11px 20px}
+.main-tabs{margin-top:28px!important;gap:36px!important}
+.video-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.video-list-row{position:relative;align-items:flex-start;gap:16px;padding:16px}
+.list-thumbnail{width:42%;aspect-ratio:16/10}
+.video-row-copy{padding:4px 0 22px;gap:8px}.video-row-copy>strong{font-size:16px}
+.video-row-likes{position:absolute;right:16px;bottom:16px;padding:0}
+.video-filters select{padding:9px 12px;font-size:13px}
+.explore-layout{grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+.setlist{position:sticky;top:104px;max-height:calc(100vh - 132px);overflow-y:auto}
+.song-content{min-width:0}.perspective-map{padding:24px 28px 18px}
+.moments-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.memory-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:28px 32px}
+.memory-stats>div{padding:0 28px;border-right:1px solid #54445f}.memory-stats>div:first-child{padding-left:0}.memory-stats>div:last-child{border-right:0}
+.memory-stats strong{font-size:36px}.memory-stats span{font-size:14px}
+.upload-dialog.simple-upload{width:980px!important;max-width:calc(100vw - 64px)!important;padding:28px!important;gap:14px!important}
+.upload-workspace{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:28px;margin:10px 0}
+.upload-media-panel{display:flex;flex-direction:column;min-width:0}
+.simple-upload .upload-zone{width:100%;min-height:290px;flex:1;align-content:center;gap:16px;padding:28px}
+.upload-metadata-panel{display:grid;gap:20px;align-content:start;min-width:0}
+.upload-label,.simple-upload .upload-description{font-size:14px}
+.upload-description textarea{min-height:90px;resize:vertical}
+.upload-edit-note{display:grid;align-content:center;justify-items:center;gap:16px;padding:28px;min-height:260px;background:#242030;border-radius:12px;text-align:center;color:#bdb0ca}
+.simple-upload .dialog-actions>.primary{width:auto;min-width:160px;padding:12px 24px}
+.create-session-dialog{width:720px!important;max-width:calc(100vw - 64px)!important;padding:28px!important}
+.new-session-grid{gap:20px}.player-dialog{width:1100px!important;padding:28px!important}
+.player-dialog .video-stage{max-height:60vh;flex-shrink:0}
+footer{padding:36px 0;margin-top:28px}
+@media(min-width:1320px){.concert-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.concert-card{padding:16px;gap:16px}.concert-poster{width:96px}.concert-topline>strong{font-size:20px}.concert-date{font-size:14px}}
+@media(min-width:1700px){main{padding-top:40px}.discovery-heading{min-height:270px}.discovery-heading h1{font-size:46px}}

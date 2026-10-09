@@ -38,11 +38,15 @@ return <Dialog open={!!context} onOpenChange={open=>{if(!open&&!busy)onClose();}
  <fieldset disabled={!!busy} className="form-stack upload-fields">
   {fixedSession&&session?<div className="upload-destination"><Music2 size={18}/><div><strong>{session.artist} · {session.city}</strong><p>{session.date} {session.time} · {session.night}</p></div></div>:<SessionChoice sessions={sessions} mode={sessionMode} onMode={mode=>{setSessionMode(mode);setSongs([]);setSegment("");setError("");}} sessionId={sessionId} onChoose={id=>{setSessionId(id);setSongs([]);setSegment("");setError("");}} search={artist} onSearch={setArtist} draft={draft} onDraft={setDraft} duplicate={duplicate}/>}
   {!fixedSession&&!session&&<p className="helper">{sessionMode==="new"?draftError:"请选择发布到哪一场演出。"}</p>}
+  <div className="upload-workspace"><div className="upload-media-panel">
   {!edit&&<><input ref={input} type="file" accept="video/mp4,video/webm,video/quicktime" className="sr-only" aria-label="选择视频文件" onChange={e=>{const f=e.target.files?.[0];if(f)void choose(f);}}/><button className="upload-zone" onClick={()=>input.current?.click()}>{media?<><Video/><strong>{file?.name}</strong><small>{Math.round(media.duration)} 秒 · 点击更换</small></>:<><UploadCloud size={28}/><strong>选择你的现场视频</strong><small>MP4 / WebM / MOV · 最大 25 MB</small></>}</button></>}
+  {edit&&<div className="upload-edit-note"><Video size={32}/><strong>编辑现场记录</strong><p>完善这段视频的歌曲、视角与现场记忆。</p></div>}
+  </div><div className="upload-metadata-panel">
   <UploadChoices allowAdd={false} label="拍摄角度" options={VIEWS.map(v=>({id:v.id,name:v.name}))} selected={view==="unknown"?[]:[view]} onChange={values=>setView(values[0]||"unknown")}/>
   <UploadChoices key={session?.id||"songs"} label="歌曲名" options={(session?.songs||[]).map(name=>({id:name,name}))} selected={songs} onChange={setSongs} multiple maxLength={60}/>
   <UploadChoices label="现场环节" options={SEGMENTS.map(name=>({id:name,name}))} selected={segment?[segment]:[]} onChange={values=>setSegment(values[0]||"")}/>
   <label className="upload-description">写下这一刻<textarea className="field" rows={2} maxLength={500} value={description} onChange={e=>setDescription(e.target.value)} placeholder="留下你的现场记忆……"/></label>
+  </div></div>
  </fieldset>
  {error&&<p className="error" role="alert">{error}</p>}{busy&&<p className="busy" role="status"><Loader2 className="spin" size={16}/>{busy}</p>}
  <div className="dialog-actions"><button className="primary" disabled={!!busy||!session||(!edit&&!media)} onClick={()=>void publish()}>{edit?"保存修改":"发布现场"}</button></div>
