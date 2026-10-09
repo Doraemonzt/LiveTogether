@@ -54,3 +54,11 @@ footer{padding:36px 0;margin-top:28px}
 .player-dialog .interaction-bar button:hover{background:#332a40;color:#e5d6ee}
 .player-dialog .interaction-bar button.selected{border-color:#758c4c;background:#303c24!important}
 .player-dialog .comment-compose{padding-top:8px;gap:14px}
+
+.perspective-node{display:grid;justify-items:center;gap:10px;flex:1;min-width:0}
+.map-nodes .node-icon{width:48px;height:48px;display:grid;place-items:center;padding:0}
+.map-nodes .perspective-filter{display:grid;justify-items:center;gap:6px;min-width:132px;padding:10px 16px;border:1px solid transparent;border-radius:10px}
+.map-nodes .perspective-filter:hover{background:#ffffff0a}
+.map-nodes .perspective-filter[aria-pressed=true]{background:#303c24;color:#d0ff9b;border-color:#758c4c}
+.map-nodes .perspective-filter strong{font-size:15px}
+.song-video-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 16px;font-size:13px;color:#a398b6}
