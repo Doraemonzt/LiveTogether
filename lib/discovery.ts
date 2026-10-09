@@ -14,8 +14,18 @@ export function recentSessions(sessions:ConcertSession[],filters:DiscoveryFilter
       &&[s.artist,s.city,s.tour,s.venue].join(" ").toLocaleLowerCase().includes(query);
   }).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)||a.id.localeCompare(b.id));
 }
-export function sessionStats(clips:Clip[],sessionId:string){
-  const unique=[...new Map(clips.filter(c=>c.sessionId===sessionId).map(c=>[c.id,c])).values()];
+export function cityStops(sessions:ConcertSession[]){
+  const stops=new Map<string,ConcertSession[]>();
+  for(const session of sessions){
+    const key=JSON.stringify([session.artist,session.city]);
+    const group=stops.get(key);
+    if(group)group.push(session);else stops.set(key,[session]);
+  }
+  return [...stops].map(([key,sessions])=>({key,session:sessions[0],sessions}));
+}
+export function sessionStats(clips:Clip[],sessionId:string|string[]){
+  const ids=new Set(typeof sessionId==="string"?[sessionId]:sessionId);
+  const unique=[...new Map(clips.filter(c=>ids.has(c.sessionId)).map(c=>[c.id,c])).values()];
   return {videos:unique.length,contributors:new Set(unique.map(c=>c.owner)).size};
 }
 export type VideoFilters={content:string;view:string;sort:"latest"|"likes"};
