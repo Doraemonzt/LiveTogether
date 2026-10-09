@@ -48,3 +48,9 @@ main{width:100%;max-width:1504px;padding:32px 48px 0;margin:0 auto}
 footer{padding:36px 0;margin-top:28px}
 @media(min-width:1320px){.concert-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.concert-card{padding:16px;gap:16px}.concert-poster{width:96px}.concert-topline>strong{font-size:20px}.concert-date{font-size:14px}}
 @media(min-width:1700px){main{padding-top:40px}.discovery-heading{min-height:270px}.discovery-heading h1{font-size:46px}}
+
+.player-dialog .interaction-bar{gap:16px;padding:16px 0;margin-top:4px}
+.player-dialog .interaction-bar button{min-height:48px;min-width:120px;justify-content:center;gap:10px;padding:10px 20px;font-size:16px;border:1px solid #493b56;border-radius:10px;background:#242030}
+.player-dialog .interaction-bar button:hover{background:#332a40;color:#e5d6ee}
+.player-dialog .interaction-bar button.selected{border-color:#758c4c;background:#303c24!important}
+.player-dialog .comment-compose{padding-top:8px;gap:14px}
